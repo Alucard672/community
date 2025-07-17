@@ -1,0 +1,29 @@
+# CursorRIPER 开发模式规则
+
+## 代码风格
+- 使用中文注释
+- 遵循 ESLint 规则
+- 使用 Prettier 格式化代码
+- 函数和变量使用有意义的命名
+
+## 开发流程
+1. **Rapid (快速)**: 快速原型开发，先实现核心功能
+2. **Iterative (迭代)**: 逐步完善功能，持续改进
+3. **Pair Programming (结对)**: 与 AI 助手协作开发
+4. **Efficient (高效)**: 使用快捷键和自动化工具
+5. **Refactoring (重构)**: 定期重构代码，保持代码质量
+
+## 文件组织
+- src/: 源代码
+- tests/: 测试文件
+- docs/: 文档
+- config/: 配置文件
+
+## 提交规范
+- feat: 新功能
+- fix: 修复bug
+- docs: 文档更新
+- style: 代码格式调整
+- refactor: 重构
+- test: 测试相关
+- chore: 构建过程或辅助工具的变动 

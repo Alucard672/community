@@ -1,0 +1,184 @@
+/* 区域选择组件样式 */
+.region-picker {
+  position: relative;
+}
+
+/* 区域显示 */
+.region-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx;
+  background: #fff;
+  border-radius: 8rpx;
+  border: 1rpx solid #e5e5e5;
+  min-height: 80rpx;
+}
+
+.region-info {
+  flex: 1;
+}
+
+.region-name {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.region-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.region-arrow {
+  margin-left: 20rpx;
+}
+
+.arrow {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 区域选择弹窗 */
+.region-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.region-content {
+  width: 90%;
+  max-width: 600rpx;
+  max-height: 80vh;
+  background: #fff;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.region-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.region-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.region-close {
+  font-size: 40rpx;
+  color: #999;
+  padding: 10rpx;
+}
+
+/* 区域列表 */
+.region-list {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.region-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+  transition: background-color 0.2s;
+}
+
+.region-item:active {
+  background-color: #f8f8f8;
+}
+
+.region-item.selected {
+  background-color: #e6f7ff;
+  border-left: 4rpx solid #1890ff;
+}
+
+.region-item-info {
+  flex: 1;
+}
+
+.region-item-name {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: 500;
+  display: block;
+}
+
+.region-item-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.region-item-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.region-item-level {
+  font-size: 22rpx;
+  color: #666;
+  background: #f0f0f0;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.region-item-default {
+  font-size: 20rpx;
+  color: #ff6b35;
+  background: #fff2e8;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+/* 操作按钮 */
+.region-actions {
+  display: flex;
+  padding: 30rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.region-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+  border: none;
+  margin: 0 10rpx;
+}
+
+.region-btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.region-btn-confirm {
+  background: #1890ff;
+  color: #fff;
+}
+
+/* 加载状态 */
+.region-loading {
+  text-align: center;
+  padding: 40rpx;
+  color: #999;
+  font-size: 28rpx;
+} 

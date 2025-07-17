@@ -1,0 +1,121 @@
+/* 区域选择页面样式 */
+.container {
+  padding: 40rpx;
+  background: #f8f8f8;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+  display: block;
+}
+
+.region-list {
+  margin-bottom: 60rpx;
+}
+
+.region-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.region-item:active {
+  background: #f8f8f8;
+}
+
+.region-item.selected {
+  border-color: #1890ff;
+  background: #e6f7ff;
+}
+
+.region-info {
+  flex: 1;
+}
+
+.region-name {
+  font-size: 36rpx;
+  color: #333;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.region-desc {
+  font-size: 26rpx;
+  color: #999;
+  display: block;
+}
+
+.region-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.region-level {
+  font-size: 22rpx;
+  color: #666;
+  background: #f0f0f0;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  margin-bottom: 8rpx;
+}
+
+.region-default {
+  font-size: 20rpx;
+  color: #ff6b35;
+  background: #fff2e8;
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.loading {
+  text-align: center;
+  padding: 80rpx;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  border: none;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-confirm {
+  background: #1890ff;
+  color: #fff;
+} 

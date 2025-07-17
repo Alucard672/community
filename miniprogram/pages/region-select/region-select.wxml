@@ -1,0 +1,38 @@
+<!-- 区域选择页面 -->
+<view class="container">
+  <view class="header">
+    <text class="title">选择区域</text>
+    <text class="subtitle">选择您所在的区域，获取更精准的信息</text>
+  </view>
+
+  <!-- 区域列表 -->
+  <view class="region-list">
+    <view 
+      wx:for="{{regions}}" 
+      wx:key="_id"
+      class="region-item {{selectedRegion._id === item._id ? 'selected' : ''}}"
+      data-region="{{item}}"
+      bindtap="selectRegion"
+    >
+      <view class="region-info">
+        <text class="region-name">{{item.name}}</text>
+        <text class="region-desc" wx:if="{{item.description}}">{{item.description}}</text>
+      </view>
+      <view class="region-status">
+        <text class="region-level">{{item.level === 1 ? '省级' : item.level === 2 ? '市级' : item.level === 3 ? '县级' : '乡镇级'}}</text>
+        <text class="region-default" wx:if="{{item.isDefault}}">默认</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <button class="btn btn-cancel" bindtap="cancelSelection">取消</button>
+    <button class="btn btn-confirm" bindtap="confirmSelection">确定</button>
+  </view>
+</view> 

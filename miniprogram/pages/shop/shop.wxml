@@ -1,0 +1,226 @@
+<!-- 店铺页面 -->
+<view class="container">
+  <!-- 店铺头部信息 -->
+  <view class="shop-header">
+    <view class="shop-banner">
+      <image class="banner-image" src="{{shop.banner}}" mode="aspectFill" />
+      <view class="shop-overlay">
+        <view class="shop-info">
+          <image class="shop-avatar" src="{{shop.avatar}}" />
+          <view class="shop-details">
+            <text class="shop-name">{{shop.name}}</text>
+            <text class="shop-desc">{{shop.description}}</text>
+            <view class="shop-stats">
+              <text class="stat-item">商品 {{shop.productCount}}</text>
+              <text class="stat-item">粉丝 {{shop.followerCount}}</text>
+              <text class="stat-item">评分 {{shop.rating}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="shop-actions">
+          <button class="follow-btn" bindtap="toggleFollow" wx:if="{{!shop.isFollowed}}">
+            <icon type="add" size="16" color="#fff" />
+            <text>关注</text>
+          </button>
+          <button class="followed-btn" bindtap="toggleFollow" wx:else>
+            <icon type="success" size="16" color="#666" />
+            <text>已关注</text>
+          </button>
+          <button class="contact-btn" bindtap="contactShop">
+            <icon type="chat" size="16" color="#fff" />
+            <text>联系</text>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 店铺导航 -->
+  <view class="shop-nav">
+    <view 
+      class="nav-item {{currentTab === 'products' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="products"
+    >
+      <text>商品</text>
+    </view>
+    <view 
+      class="nav-item {{currentTab === 'reviews' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="reviews"
+    >
+      <text>评价</text>
+    </view>
+    <view 
+      class="nav-item {{currentTab === 'info' ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="info"
+    >
+      <text>店铺信息</text>
+    </view>
+  </view>
+
+  <!-- 商品列表 -->
+  <view class="tab-content" wx:if="{{currentTab === 'products'}}">
+    <view class="filter-bar">
+      <view class="filter-item" bindtap="showSortOptions">
+        <text>{{sortText}}</text>
+        <icon type="arrow" size="12" color="#999" />
+      </view>
+      <view class="filter-item" bindtap="showCategoryOptions">
+        <text>{{categoryText}}</text>
+        <icon type="arrow" size="12" color="#999" />
+      </view>
+    </view>
+
+    <view class="product-grid">
+      <view 
+        wx:for="{{products}}" 
+        wx:key="id" 
+        class="product-item"
+        bindtap="goToProduct"
+        data-product="{{item}}"
+      >
+        <image class="product-image" src="{{item.image}}" mode="aspectFill" />
+        <view class="product-info">
+          <text class="product-title">{{item.title}}</text>
+          <text class="product-price">{{item.price}}</text>
+          <view class="product-stats">
+            <text class="sales-count">已售 {{item.salesCount}}</text>
+            <text class="rating">⭐ {{item.rating}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{products.length === 0}}">
+      <text class="empty-icon">📦</text>
+      <text class="empty-title">暂无商品</text>
+      <text class="empty-desc">该店铺还没有上架商品</text>
+    </view>
+  </view>
+
+  <!-- 评价列表 -->
+  <view class="tab-content" wx:if="{{currentTab === 'reviews'}}">
+    <view class="review-stats">
+      <view class="rating-overview">
+        <text class="overall-rating">{{shop.rating}}</text>
+        <text class="rating-label">综合评分</text>
+      </view>
+      <view class="rating-breakdown">
+        <view class="rating-item">
+          <text class="rating-label">商品质量</text>
+          <text class="rating-value">{{shop.qualityRating}}</text>
+        </view>
+        <view class="rating-item">
+          <text class="rating-label">服务态度</text>
+          <text class="rating-value">{{shop.serviceRating}}</text>
+        </view>
+        <view class="rating-item">
+          <text class="rating-label">物流速度</text>
+          <text class="rating-value">{{shop.logisticsRating}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="review-list">
+      <view 
+        wx:for="{{reviews}}" 
+        wx:key="id" 
+        class="review-item"
+      >
+        <view class="review-header">
+          <image class="reviewer-avatar" src="{{item.user.avatar}}" />
+          <view class="reviewer-info">
+            <text class="reviewer-name">{{item.user.name}}</text>
+            <view class="review-rating">
+              <text wx:for="{{item.rating}}" wx:key="index" class="star">⭐</text>
+            </view>
+          </view>
+          <text class="review-time">{{item.time}}</text>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+        <view class="review-images" wx:if="{{item.images && item.images.length > 0}}">
+          <image 
+            wx:for="{{item.images}}" 
+            wx:key="index" 
+            src="{{item}}" 
+            class="review-image"
+            bindtap="previewImage"
+            data-url="{{item}}"
+            data-urls="{{item.images}}"
+          />
+        </view>
+        <view class="review-product">
+          <text class="product-name">{{item.productName}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{reviews.length === 0}}">
+      <text class="empty-icon">💬</text>
+      <text class="empty-title">暂无评价</text>
+      <text class="empty-desc">该店铺还没有收到评价</text>
+    </view>
+  </view>
+
+  <!-- 店铺信息 -->
+  <view class="tab-content" wx:if="{{currentTab === 'info'}}">
+    <view class="info-section">
+      <view class="info-item">
+        <text class="info-label">店铺名称</text>
+        <text class="info-value">{{shop.name}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">店铺地址</text>
+        <text class="info-value">{{shop.address}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">联系电话</text>
+        <text class="info-value" bindtap="callShop">{{shop.phone}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">营业时间</text>
+        <text class="info-value">{{shop.businessHours}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">店铺简介</text>
+        <text class="info-value">{{shop.description}}</text>
+      </view>
+    </view>
+
+    <view class="certification-section">
+      <view class="section-title">店铺认证</view>
+      <view class="certification-list">
+        <view class="certification-item" wx:for="{{shop.certifications}}" wx:key="type">
+          <icon type="success" size="16" color="#00c851" />
+          <text>{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 排序选项弹窗 -->
+<view class="sort-modal" wx:if="{{showSortModal}}">
+  <view class="modal-mask" bindtap="hideSortModal"></view>
+  <view class="sort-options">
+    <view class="option-item" wx:for="{{sortOptions}}" wx:key="value" bindtap="selectSort" data-sort="{{item}}">
+      <text>{{item.label}}</text>
+      <icon type="success" size="16" color="#00c851" wx:if="{{currentSort === item.value}}" />
+    </view>
+  </view>
+</view>
+
+<!-- 分类选项弹窗 -->
+<view class="category-modal" wx:if="{{showCategoryModal}}">
+  <view class="modal-mask" bindtap="hideCategoryModal"></view>
+  <view class="category-options">
+    <view class="option-item" wx:for="{{categoryOptions}}" wx:key="value" bindtap="selectCategory" data-category="{{item}}">
+      <text>{{item.label}}</text>
+      <icon type="success" size="16" color="#00c851" wx:if="{{currentCategory === item.value}}" />
+    </view>
+  </view>
+</view>

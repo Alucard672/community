@@ -1,0 +1,146 @@
+<!-- 店铺详情页面 -->
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <!-- 店铺基本信息 -->
+  <view class="shop-info" wx:else>
+    <image class="shop-banner" src="{{shop.banner}}" mode="aspectFill" />
+    <view class="shop-content">
+      <view class="shop-header">
+        <image class="shop-avatar" src="{{shop.avatar}}" mode="aspectFill" />
+        <view class="shop-details">
+          <text class="shop-name">{{shop.name}}</text>
+          <text class="shop-desc">{{shop.description}}</text>
+          <view class="shop-stats">
+            <view class="stat-item">
+              <text class="stat-value">{{shop.productCount}}</text>
+              <text class="stat-label">商品</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-value">{{shop.followerCount}}</text>
+              <text class="stat-label">粉丝</text>
+            </view>
+            <view class="stat-item">
+              <text class="stat-value">{{shop.rating}}</text>
+              <text class="stat-label">评分</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="shop-actions">
+        <button class="action-btn {{shop.isFollowed ? 'secondary' : 'primary'}}" 
+                bindtap="{{shop.isFollowed ? 'unfollowShop' : 'followShop'}}">
+          <icon type="{{shop.isFollowed ? 'success' : 'add'}}" size="16" 
+                color="{{shop.isFollowed ? '#666' : '#fff'}}" />
+          <text>{{shop.isFollowed ? '已关注' : '关注店铺'}}</text>
+        </button>
+        <button class="action-btn secondary" bindtap="contactShop">
+          <icon type="chat" size="16" color="#666" />
+          <text>联系商家</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 店铺认证信息 -->
+  <view class="content-card" wx:if="{{shop.certifications && shop.certifications.length > 0}}">
+    <view class="section-title">店铺认证</view>
+    <view class="certification-list">
+      <view class="certification-item" wx:for="{{shop.certifications}}" wx:key="type">
+        <icon type="success" size="16" color="#00c851" />
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 店铺详细信息 -->
+  <view class="content-card">
+    <view class="section-title">店铺详情</view>
+    <view class="detail-list">
+      <view class="detail-item" wx:if="{{shop.address}}">
+        <text class="detail-label">店铺地址</text>
+        <text class="detail-value">{{shop.address}}</text>
+      </view>
+      <view class="detail-item" wx:if="{{shop.phone}}">
+        <text class="detail-label">联系电话</text>
+        <text class="detail-value phone" bindtap="callShop">{{shop.phone}}</text>
+      </view>
+      <view class="detail-item" wx:if="{{shop.businessHours}}">
+        <text class="detail-label">营业时间</text>
+        <text class="detail-value">{{shop.businessHours}}</text>
+      </view>
+      <view class="detail-item" wx:if="{{shop.openTime}}">
+        <text class="detail-label">开店时间</text>
+        <text class="detail-value">{{shop.openTime}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 店铺评分详情 -->
+  <view class="content-card">
+    <view class="section-title">评分详情</view>
+    <view class="rating-details">
+      <view class="rating-item">
+        <text class="rating-label">商品质量</text>
+        <view class="rating-bar">
+          <view class="rating-fill" style="width: {{shop.qualityRating * 20}}%"></view>
+        </view>
+        <text class="rating-value">{{shop.qualityRating}}</text>
+      </view>
+      <view class="rating-item">
+        <text class="rating-label">服务态度</text>
+        <view class="rating-bar">
+          <view class="rating-fill" style="width: {{shop.serviceRating * 20}}%"></view>
+        </view>
+        <text class="rating-value">{{shop.serviceRating}}</text>
+      </view>
+      <view class="rating-item">
+        <text class="rating-label">物流速度</text>
+        <view class="rating-bar">
+          <view class="rating-fill" style="width: {{shop.logisticsRating * 20}}%"></view>
+        </view>
+        <text class="rating-value">{{shop.logisticsRating}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 店铺公告 -->
+  <view class="content-card" wx:if="{{shop.notices && shop.notices.length > 0}}">
+    <view class="section-title">店铺公告</view>
+    <view class="notice-list">
+      <view class="notice-item" wx:for="{{shop.notices}}" wx:key="id">
+        <text class="notice-title">{{item.title}}</text>
+        <text class="notice-content">{{item.content}}</text>
+        <text class="notice-time">{{item.time}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 推荐商品预览 -->
+  <view class="content-card">
+    <view class="section-title">热门商品</view>
+    <view class="product-preview">
+      <text class="preview-text">查看更多商品信息</text>
+      <button class="preview-btn" bindtap="viewProducts">
+        <text>查看全部</text>
+        <icon type="arrow" size="16" color="#667eea" />
+      </button>
+    </view>
+  </view>
+</view>
+
+<!-- 悬浮操作按钮 -->
+<view class="float-actions">
+  <button class="float-btn" bindtap="viewProducts">
+    <icon type="shop" size="20" color="#fff" />
+    <text>查看商品</text>
+  </button>
+  <button class="float-btn" bindtap="viewReviews">
+    <icon type="comment" size="20" color="#fff" />
+    <text>查看评价</text>
+  </button>
+</view>

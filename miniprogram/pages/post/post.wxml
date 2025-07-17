@@ -1,0 +1,188 @@
+<!-- 帖子详情页面 -->
+<view class="container">
+  <!-- 帖子内容 -->
+  <view class="post-content">
+    <!-- 作者信息 -->
+    <view class="author-section">
+      <image class="avatar" src="{{post.author.avatar}}" />
+      <view class="author-info">
+        <text class="author-name">{{post.author.name}}</text>
+        <text class="post-time">{{post.time}}</text>
+      </view>
+      <view class="author-actions">
+        <button class="follow-btn" bindtap="followAuthor" wx:if="{{!post.author.isFollowed}}">关注</button>
+        <button class="followed-btn" bindtap="unfollowAuthor" wx:else>已关注</button>
+      </view>
+    </view>
+
+    <!-- 帖子标题 -->
+    <view class="post-title">
+      <text>{{post.title}}</text>
+    </view>
+
+    <!-- 帖子描述 -->
+    <view class="post-desc">
+      <text>{{post.desc}}</text>
+    </view>
+
+    <!-- 帖子图片 -->
+    <view class="post-images" wx:if="{{post.images && post.images.length > 0}}">
+      <image 
+        wx:for="{{post.images}}" 
+        wx:key="index" 
+        src="{{item}}" 
+        class="post-image"
+        bindtap="previewImage"
+        data-url="{{item}}"
+        data-urls="{{post.images}}"
+      />
+    </view>
+
+    <!-- 帖子标签 -->
+    <view class="post-tags" wx:if="{{post.tags && post.tags.length > 0}}">
+      <text 
+        wx:for="{{post.tags}}" 
+        wx:key="index" 
+        class="tag-item"
+      >{{item}}</text>
+    </view>
+
+    <!-- 价格信息 -->
+    <view class="price-section" wx:if="{{post.price}}">
+      <text class="price-label">价格：</text>
+      <text class="price-value">{{post.price}}</text>
+    </view>
+
+    <!-- 位置信息 -->
+    <view class="location-section" wx:if="{{post.location}}">
+      <icon type="location" size="16" color="#999" />
+      <text class="location-text">{{post.location}}</text>
+    </view>
+
+    <!-- 互动统计 -->
+    <view class="stats-section">
+      <view class="stat-item">
+        <icon type="eye" size="16" color="#999" />
+        <text class="stat-number">{{post.stats.views}}</text>
+        <text class="stat-label">浏览</text>
+      </view>
+      <view class="stat-item">
+        <icon type="like" size="16" color="{{post.isLiked ? '#ff4757' : '#999'}}" />
+        <text class="stat-number">{{post.stats.likes}}</text>
+        <text class="stat-label">点赞</text>
+      </view>
+      <view class="stat-item">
+        <icon type="comment" size="16" color="#999" />
+        <text class="stat-number">{{post.stats.comments}}</text>
+        <text class="stat-label">评论</text>
+      </view>
+      <view class="stat-item">
+        <icon type="share" size="16" color="#999" />
+        <text class="stat-number">0</text>
+        <text class="stat-label">分享</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 互动按钮 -->
+  <view class="action-bar">
+    <view class="action-item {{post.isLiked ? 'liked' : ''}}" bindtap="toggleLike">
+      <view class="action-icon">
+        <icon type="like" size="24" color="{{post.isLiked ? '#ff4757' : '#666'}}" />
+      </view>
+      <text class="action-text">{{post.isLiked ? '已点赞' : '点赞'}}</text>
+    </view>
+    <view class="action-item" bindtap="showCommentInput">
+      <view class="action-icon">
+        <icon type="comment" size="24" color="#666" />
+      </view>
+      <text class="action-text">写评论</text>
+    </view>
+    <view class="action-item" bindtap="sharePost">
+      <view class="action-icon">
+        <icon type="share" size="24" color="#666" />
+      </view>
+      <text class="action-text">分享</text>
+    </view>
+    <view class="action-item" bindtap="reportPost">
+      <view class="action-icon warning">
+        <icon type="warn" size="24" color="#666" />
+      </view>
+      <text class="action-text">举报</text>
+    </view>
+  </view>
+
+  <!-- 评论区域 -->
+  <view class="comments-section">
+    <view class="section-title">
+      <text>评论 ({{comments.length}})</text>
+    </view>
+    <view class="comment-list">
+      <view 
+        wx:for="{{comments}}" 
+        wx:key="id" 
+        class="comment-item"
+      >
+        <image class="comment-avatar" src="{{item.author.avatar}}" />
+        <view class="comment-content">
+          <view class="comment-header">
+            <text class="comment-author">{{item.author.name}}</text>
+            <text class="comment-time">{{item.time}}</text>
+          </view>
+          <text class="comment-text">{{item.content}}</text>
+          <view class="comment-actions">
+            <text class="reply-btn" bindtap="replyComment" data-comment="{{item}}">回复</text>
+            <text class="like-btn {{item.isLiked ? 'liked' : ''}}" bindtap="likeComment" data-id="{{item.id}}">
+              {{item.isLiked ? '已赞' : '赞'}} ({{item.likes}})
+            </text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 空状态 -->
+    <view class="empty-comments" wx:if="{{comments.length === 0}}">
+      <text class="empty-icon">💬</text>
+      <text class="empty-text">暂无评论，快来发表第一条评论吧！</text>
+    </view>
+  </view>
+
+  <!-- 相关推荐 -->
+  <view class="related-section" wx:if="{{relatedPosts.length > 0}}">
+    <view class="section-title">
+      <text>相关推荐</text>
+    </view>
+    <view class="related-list">
+      <view 
+        wx:for="{{relatedPosts}}" 
+        wx:key="id" 
+        class="related-item"
+        bindtap="goToPost"
+        data-post="{{item}}"
+      >
+        <image class="related-image" src="{{item.cover}}" />
+        <view class="related-info">
+          <text class="related-title">{{item.title}}</text>
+          <text class="related-price">{{item.price}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 评论输入框 -->
+<view class="comment-input-modal" wx:if="{{showCommentInput}}">
+  <view class="modal-mask" bindtap="hideCommentInput"></view>
+  <view class="comment-input-container">
+    <textarea 
+      class="comment-textarea" 
+      placeholder="写下你的评论..." 
+      value="{{commentText}}"
+      bindinput="onCommentInput"
+      auto-focus="{{true}}"
+    ></textarea>
+    <view class="comment-input-actions">
+      <button class="cancel-btn" bindtap="hideCommentInput">取消</button>
+      <button class="submit-btn" bindtap="submitComment">发送</button>
+    </view>
+  </view>
+</view> 

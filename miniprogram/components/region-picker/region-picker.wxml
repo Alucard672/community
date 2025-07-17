@@ -1,0 +1,52 @@
+<!-- 区域选择组件 -->
+<view class="region-picker">
+  <!-- 区域显示 -->
+  <view class="region-display" bindtap="showRegionPicker">
+    <view class="region-info">
+      <text class="region-name">{{selectedRegion.name || '请选择区域'}}</text>
+      <text class="region-desc" wx:if="{{selectedRegion.description}}">{{selectedRegion.description}}</text>
+    </view>
+    <view class="region-arrow">
+      <text class="arrow">></text>
+    </view>
+  </view>
+
+  <!-- 区域选择弹窗 -->
+  <view class="region-modal" wx:if="{{show}}" bindtap="hideRegionPicker">
+    <view class="region-content" catchtap="stopPropagation">
+      <view class="region-header">
+        <text class="region-title">选择区域</text>
+        <view class="region-close" bindtap="hideRegionPicker">×</view>
+      </view>
+      
+      <view class="region-list">
+        <view 
+          wx:for="{{regions}}" 
+          wx:key="_id"
+          class="region-item {{selectedRegion._id === item._id ? 'selected' : ''}}"
+          data-region="{{item}}"
+          bindtap="selectRegion"
+        >
+          <view class="region-item-info">
+            <text class="region-item-name">{{item.name}}</text>
+            <text class="region-item-desc" wx:if="{{item.description}}">{{item.description}}</text>
+          </view>
+          <view class="region-item-status">
+            <text class="region-item-level">{{item.level === 1 ? '省级' : item.level === 2 ? '市级' : item.level === 3 ? '县级' : '乡镇级'}}</text>
+            <text class="region-item-default" wx:if="{{item.isDefault}}">默认</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="region-actions">
+        <button class="region-btn region-btn-cancel" bindtap="cancelSelection">取消</button>
+        <button class="region-btn region-btn-confirm" bindtap="confirmSelection">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="region-loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view> 

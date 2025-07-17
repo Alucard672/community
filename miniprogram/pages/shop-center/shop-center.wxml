@@ -1,0 +1,4 @@
+<view>
+  <button bindtap="toProductManage">商品管理</button>
+  <button bindtap="toOrderManage">订单管理</button>
+</view> 

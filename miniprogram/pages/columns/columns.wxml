@@ -1,0 +1,248 @@
+<!-- 分列页面 -->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">分列布局展示</text>
+    <text class="page-subtitle">横向排列的各种实现方式</text>
+  </view>
+
+  <!-- 基础横向排列 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">基础横向排列</text>
+    </view>
+    <view class="flex-row gap-md">
+      <view class="demo-item">项目1</view>
+      <view class="demo-item">项目2</view>
+      <view class="demo-item">项目3</view>
+      <view class="demo-item">项目4</view>
+    </view>
+  </view>
+
+  <!-- 横向居中排列 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">横向居中排列</text>
+    </view>
+    <view class="flex-row-center gap-md">
+      <view class="demo-item">居中项目1</view>
+      <view class="demo-item">居中项目2</view>
+      <view class="demo-item">居中项目3</view>
+    </view>
+  </view>
+
+  <!-- 横向两端对齐 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">横向两端对齐</text>
+    </view>
+    <view class="flex-row-between">
+      <view class="demo-item">左对齐</view>
+      <view class="demo-item">右对齐</view>
+    </view>
+  </view>
+
+  <!-- 横向均匀分布 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">横向均匀分布</text>
+    </view>
+    <view class="flex-row-around">
+      <view class="demo-item">项目1</view>
+      <view class="demo-item">项目2</view>
+      <view class="demo-item">项目3</view>
+    </view>
+  </view>
+
+  <!-- 横向滚动 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">横向滚动</text>
+    </view>
+    <view class="scroll-row">
+      <view class="scroll-item">滚动项目1</view>
+      <view class="scroll-item">滚动项目2</view>
+      <view class="scroll-item">滚动项目3</view>
+      <view class="scroll-item">滚动项目4</view>
+      <view class="scroll-item">滚动项目5</view>
+      <view class="scroll-item">滚动项目6</view>
+    </view>
+  </view>
+
+  <!-- 2列网格 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">2列网格</text>
+    </view>
+    <view class="grid-row-2">
+      <view class="grid-item">网格项目1</view>
+      <view class="grid-item">网格项目2</view>
+      <view class="grid-item">网格项目3</view>
+      <view class="grid-item">网格项目4</view>
+    </view>
+  </view>
+
+  <!-- 3列网格 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">3列网格</text>
+    </view>
+    <view class="grid-row-3">
+      <view class="grid-item">网格项目1</view>
+      <view class="grid-item">网格项目2</view>
+      <view class="grid-item">网格项目3</view>
+      <view class="grid-item">网格项目4</view>
+      <view class="grid-item">网格项目5</view>
+      <view class="grid-item">网格项目6</view>
+    </view>
+  </view>
+
+  <!-- 4列网格 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">4列网格</text>
+    </view>
+    <view class="grid-row-4">
+      <view class="grid-item">网格项目1</view>
+      <view class="grid-item">网格项目2</view>
+      <view class="grid-item">网格项目3</view>
+      <view class="grid-item">网格项目4</view>
+      <view class="grid-item">网格项目5</view>
+      <view class="grid-item">网格项目6</view>
+      <view class="grid-item">网格项目7</view>
+      <view class="grid-item">网格项目8</view>
+    </view>
+  </view>
+
+  <!-- 分类图标横向排列 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">分类图标横向排列</text>
+    </view>
+    <view class="category-list">
+      <view class="category-item">
+        <view class="category-icon orange">📱</view>
+        <text class="category-name">二手交易</text>
+      </view>
+      <view class="category-item">
+        <view class="category-icon teal">🏠</view>
+        <text class="category-name">租房信息</text>
+      </view>
+      <view class="category-item">
+        <view class="category-icon blue">💼</view>
+        <text class="category-name">招聘信息</text>
+      </view>
+      <view class="category-item">
+        <view class="category-icon green">🤝</view>
+        <text class="category-name">中介服务</text>
+      </view>
+      <view class="category-item">
+        <view class="category-icon purple">🛠️</view>
+        <text class="category-name">生活服务</text>
+      </view>
+      <view class="category-item">
+        <view class="category-icon pink">📚</view>
+        <text class="category-name">教育培训</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 按钮组横向排列 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">按钮组横向排列</text>
+    </view>
+    <view class="flex-row-between">
+      <button class="btn btn-secondary">取消</button>
+      <button class="btn btn-primary">确认</button>
+    </view>
+  </view>
+
+  <!-- 标签按钮组 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">标签按钮组</text>
+    </view>
+    <view class="flex-row gap-sm">
+      <text class="tag tag-primary">标签1</text>
+      <text class="tag tag-secondary">标签2</text>
+      <text class="tag tag-success">标签3</text>
+      <text class="tag tag-warning">标签4</text>
+    </view>
+  </view>
+
+  <!-- 统计信息横向排列 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">统计信息横向排列</text>
+    </view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">1250</text>
+        <text class="stat-label">发布</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">890</text>
+        <text class="stat-label">浏览</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">567</text>
+        <text class="stat-label">点赞</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">234</text>
+        <text class="stat-label">评论</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 帖子信息横向排列 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">帖子信息横向排列</text>
+    </view>
+    <view class="post-demo">
+      <view class="post-header">
+        <image class="avatar" src="/images/avatar1.jpg" />
+        <view class="post-info">
+          <text class="author-name">用户名</text>
+          <text class="post-time">2小时前</text>
+        </view>
+        <text class="post-category">二手交易</text>
+      </view>
+      <view class="post-footer">
+        <view class="post-stats">
+          <view class="stat-item">
+            <icon type="eye" size="12" />
+            <text>1.2k</text>
+          </view>
+          <view class="stat-item">
+            <icon type="like" size="12" />
+            <text>89</text>
+          </view>
+          <view class="stat-item">
+            <icon type="comment" size="12" />
+            <text>23</text>
+          </view>
+        </view>
+        <text class="post-price">¥299</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索栏横向排列 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">搜索栏横向排列</text>
+    </view>
+    <view class="search-bar">
+      <view class="search-input">
+        <icon type="search" size="16" />
+        <input placeholder="搜索内容" />
+      </view>
+      <view class="location">
+        <icon type="location" size="16" />
+      </view>
+    </view>
+  </view>
+</view> 
