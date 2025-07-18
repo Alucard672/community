@@ -1,71 +1,128 @@
-const { getUserInfo } = require('../../utils/user')
-
 Page({
   data: {
-    userInfo: null, // 用户信息
-    topicsCount: 0, // 话题数
-    favoritesCount: 0 // 收藏数
-  },
-  onShow() {
-    this.loadUser()
-    this.loadStats()
-  },
-  // 加载用户信息
-  loadUser() {
-    getUserInfo().then(user => {
-      this.setData({ userInfo: user })
-    })
-  },
-  // 加载统计信息（我的话题、收藏等）
-  loadStats() {
-    // 这里用假数据，实际应请求后端接口
-    this.setData({
-      topicsCount: 12, // 假设有12个话题
-      favoritesCount: 8 // 假设有8个收藏
-    })
-  },
-  // 微信一键登录
-  onLogin() {
-    wx.getUserProfile({
-      desc: '用于完善会员资料',
-      success: res => {
-        // 这里应调用后端接口进行登录
-        const user = {
-          avatar: res.userInfo.avatarUrl,
-          nickname: res.userInfo.nickName,
-          ...res.userInfo
-        }
-        this.setData({ userInfo: user })
-        // 可存储到本地或同步到后端
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    menuList: [
+      {
+        icon: '/images/home.png',
+        title: '我的订单',
+        path: '/pages/order-manage/order-manage',
+        color: 'green'
       },
-      fail: () => {
-        wx.showToast({ title: '登录失败', icon: 'none' })
+      {
+        icon: '/images/shop.png',
+        title: '我的店铺',
+        path: '/pages/shop-center/shop-center',
+        color: 'teal'
+      },
+      {
+        icon: '/images/publish.png',
+        title: '发布管理',
+        path: '/pages/product-manage/product-manage',
+        color: 'orange'
+      },
+      {
+        icon: '/images/feedback.png',
+        title: '意见反馈',
+        path: '/pages/feedback/feedback',
+        color: 'blue'
+      },
+      {
+        icon: '/images/settings.png',
+        title: '设置',
+        path: '/pages/settings/settings',
+        color: 'purple'
+      },
+      {
+        icon: '/images/profile.png',
+        title: '关于我们',
+        path: '/pages/about/about',
+        color: 'pink'
       }
-    })
+    ]
   },
-  // 跳转到我的话题
-  goToMyTopics() {
-    wx.navigateTo({ url: '/pages/my-topics/my-topics' })
+
+  onLoad() {
+    console.log('个人中心页面加载');
+    this.checkUserInfo();
   },
-  // 跳转到我的收藏
-  goToMyFavorites() {
-    wx.navigateTo({ url: '/pages/my-favorites/my-favorites' })
+
+  onShow() {
+    console.log('个人中心页面显示');
+    this.loadUserInfo();
   },
-  // 跳转到我的评论
-  goToMyComments() {
-    wx.navigateTo({ url: '/pages/my-comments/my-comments' })
+
+  // 检查用户信息
+  checkUserInfo() {
+    const userInfo = wx.getStorageSync('userInfo');
+    if (userInfo) {
+      this.setData({
+        userInfo: userInfo,
+        hasUserInfo: true
+      });
+    }
   },
-  // 跳转到设置
-  goToSettings() {
-    wx.navigateTo({ url: '/pages/settings/settings' })
+
+  // 加载用户信息
+  loadUserInfo() {
+    try {
+      const userInfo = wx.getStorageSync('userInfo');
+      if (userInfo) {
+        this.setData({
+          userInfo: userInfo,
+          hasUserInfo: true
+        });
+      }
+    } catch (error) {
+      console.error('加载用户信息失败:', error);
+    }
   },
-  toShopCenter() {
-    wx.navigateTo({ url: '/pages/shop-center/shop-center' })
+
+  // 获取用户信息
+  getUserInfo(e) {
+    console.log('获取用户信息:', e);
+    if (e.detail.userInfo) {
+      this.setData({
+        userInfo: e.detail.userInfo,
+        hasUserInfo: true
+      });
+      wx.setStorageSync('userInfo', e.detail.userInfo);
+    }
   },
-  toApplyShop() {
-    wx.navigateTo({ url: '/pages/apply-shop/apply-shop' })
+
+  // 菜单项点击
+  onMenuClick(e) {
+    const index = e.currentTarget.dataset.index;
+    const menu = this.data.menuList[index];
+    
+    if (menu.path) {
+      wx.navigateTo({
+        url: menu.path,
+        fail: (error) => {
+          console.error('页面跳转失败:', error);
+          wx.showToast({
+            title: '页面开发中',
+            icon: 'none'
+          });
+        }
+      });
+    }
   },
-  goToPublish() {
-    wx.navigateTo({ url: '/pages/publish/publish' })
+
+  // 设置
+  onSettings() {
+    wx.showToast({
+      title: '设置功能开发中',
+      icon: 'none'
+    });
+  },
+
+  // 关于
+  onAbout() {
+    wx.showToast({
+      title: '关于功能开发中',
+      icon: 'none'
+    });
   }
-}) 
+});

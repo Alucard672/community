@@ -1,0 +1,17 @@
+<view class="post-item" bindtap="onPostTap">
+  <view class="post-header">
+    <image class="avatar" src="{{post.author.avatarUrl || '/images/avatar1.jpg'}}" />
+    <view class="post-info">
+      <text class="author">{{post.author.nickName || '匿名用户'}}</text>
+      <text class="time">{{post.createTime}}</text>
+    </view>
+  </view>
+  <view class="post-content">
+    <text class="title">{{post.title}}</text>
+    <text class="content">{{post.content}}</text>
+  </view>
+  <view class="post-footer">
+    <text class="likes">{{post.likes || 0}} 赞</text>
+    <text class="comments">{{post.comments || 0}} 评论</text>
+  </view>
+</view>

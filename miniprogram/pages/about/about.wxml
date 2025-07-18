@@ -1,0 +1,12 @@
+<view class="container">
+  <view class="custom-navbar">
+    <view class="navbar-content">
+      <text class="navbar-title">关于我们</text>
+    </view>
+  </view>
+  <view class="empty-state">
+    <text class="empty-icon">ℹ️</text>
+    <text class="empty-title">关于我们页面开发中</text>
+    <text class="empty-desc">敬请期待更多内容！</text>
+  </view>
+</view> 

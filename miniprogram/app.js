@@ -26,9 +26,10 @@ App({
       return;
     }
     
+    // 更新云开发初始化配置
     wx.cloud.init({
-      env: 'cloud1-8g0b0b0b0b0b0b0b', // 替换为你的云开发环境ID
-      traceUser: true,
+      env: 'your-env-id', // 替换为你的云开发环境ID
+      traceUser: true
     });
     
     console.log('云开发初始化成功');

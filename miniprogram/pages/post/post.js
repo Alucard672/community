@@ -13,7 +13,6 @@ Page({
     relatedPosts: [],
     
     // 评论输入
-    showCommentInput: false,
     commentText: '',
     
     // 加载状态
@@ -29,12 +28,96 @@ Page({
     }
   },
 
+  // 格式化时间
+  formatTime(date) {
+    const now = new Date()
+    const postDate = new Date(date)
+    const diff = now - postDate
+    
+    const minutes = Math.floor(diff / (1000 * 60))
+    const hours = Math.floor(diff / (1000 * 60 * 60))
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    
+    if (minutes < 60) {
+      return `${minutes}分钟前`
+    } else if (hours < 24) {
+      return `${hours}小时前`
+    } else if (days < 30) {
+      return `${days}天前`
+    } else {
+      return postDate.toLocaleDateString()
+    }
+  },
+
+  // 格式化数字
+  formatNumber(num) {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'k'
+    }
+    return num.toString()
+  },
+
   // 加载帖子详情
   async loadPostDetail(postId) {
     try {
       this.setData({ loading: true })
       
-      // 模拟加载帖子数据
+      console.log('开始加载帖子详情，ID:', postId)
+      
+      // 调用云函数获取帖子详情
+      const { result } = await wx.cloud.callFunction({
+        name: 'posts',
+        data: {
+          action: 'getDetail',
+          data: { postId }
+        }
+      })
+      
+      console.log('云函数返回结果:', result)
+      
+      if (!result.success) {
+        throw new Error(result.message || '获取帖子详情失败')
+      }
+      
+      const postData = result.data
+      console.log('原始帖子数据:', postData)
+      
+      // 格式化帖子数据
+      const post = {
+        id: postData._id,
+        author: {
+          id: postData.author,
+          name: postData.authorInfo.nickname,
+          avatar: postData.authorInfo.avatar,
+          isFollowed: false // 需要检查是否已关注
+        },
+        title: postData.title,
+        desc: postData.content,
+        images: postData.images || [],
+        tags: postData.tags || [],
+        price: postData.price ? `¥${postData.price.amount}` : null,
+        location: postData.location ? postData.location.address : null,
+        category: postData.type,
+        time: this.formatTime(postData.createdAt),
+        stats: {
+          views: this.formatNumber(postData.stats.views),
+          likes: this.formatNumber(postData.stats.likes),
+          comments: this.formatNumber(postData.stats.comments)
+        },
+        isLiked: false // 需要检查是否已点赞
+      }
+      
+      this.setData({
+        post,
+        loading: false
+      })
+      
+      console.log('加载帖子详情成功:', post)
+    } catch (error) {
+      console.error('加载帖子详情失败:', error)
+      
+      // 如果云函数调用失败，使用模拟数据
+      console.log('使用模拟数据作为备选')
       const mockPost = {
         id: postId,
         author: {
@@ -68,10 +151,10 @@ Page({
         loading: false
       })
       
-      console.log('加载帖子详情成功:', mockPost)
-    } catch (error) {
-      console.error('加载帖子详情失败:', error)
-      this.setData({ loading: false })
+      wx.showToast({
+        title: '使用模拟数据',
+        icon: 'none'
+      })
     }
   },
 
@@ -162,33 +245,43 @@ Page({
   },
 
   // 切换点赞状态
-  toggleLike() {
+  async toggleLike() {
     const post = this.data.post
-    post.isLiked = !post.isLiked
-    post.stats.likes = post.isLiked ? 
-      (parseInt(post.stats.likes) + 1).toString() : 
-      (parseInt(post.stats.likes) - 1).toString()
     
-    this.setData({ post })
-    
-    wx.showToast({
-      title: post.isLiked ? '点赞成功' : '已取消点赞',
-      icon: 'success'
-    })
+    try {
+      const action = post.isLiked ? 'unlike' : 'like'
+      const { result } = await wx.cloud.callFunction({
+        name: 'posts',
+        data: {
+          action,
+          data: { postId: post.id }
+        }
+      })
+      
+      if (!result.success) {
+        throw new Error(result.message || '操作失败')
+      }
+      
+      // 更新本地状态
+      post.isLiked = !post.isLiked
+      post.stats.likes = this.formatNumber(result.data.likes)
+      
+      this.setData({ post })
+      
+      wx.showToast({
+        title: post.isLiked ? '点赞成功' : '已取消点赞',
+        icon: 'success'
+      })
+    } catch (error) {
+      console.error('点赞操作失败:', error)
+      wx.showToast({
+        title: '操作失败',
+        icon: 'none'
+      })
+    }
   },
 
-  // 显示评论输入框
-  showCommentInput() {
-    this.setData({ showCommentInput: true })
-  },
 
-  // 隐藏评论输入框
-  hideCommentInput() {
-    this.setData({ 
-      showCommentInput: false,
-      commentText: ''
-    })
-  },
 
   // 评论输入
   onCommentInput(e) {
@@ -210,7 +303,8 @@ Page({
     }
 
     try {
-      // 模拟提交评论
+      // TODO: 调用评论云函数
+      // 暂时使用模拟数据，后续需要实现评论云函数
       const newComment = {
         id: Date.now(),
         author: {
@@ -226,13 +320,12 @@ Page({
       const comments = [newComment, ...this.data.comments]
       this.setData({ 
         comments,
-        showCommentInput: false,
         commentText: ''
       })
       
       // 更新帖子评论数
       const updatedPost = this.data.post
-      updatedPost.stats.comments = (parseInt(updatedPost.stats.comments) + 1).toString()
+      updatedPost.stats.comments = this.formatNumber(parseInt(updatedPost.stats.comments.replace('k', '000')) + 1)
       this.setData({ post: updatedPost })
       
       wx.showToast({
@@ -266,16 +359,47 @@ Page({
   replyComment(e) {
     const comment = e.currentTarget.dataset.comment
     this.setData({
-      showCommentInput: true,
       commentText: `回复 @${comment.author.name}：`
     })
   },
 
   // 分享帖子
   sharePost() {
-    wx.showShareMenu({
-      withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
+    const { post } = this.data
+    wx.showActionSheet({
+      itemList: ['分享给朋友', '分享到朋友圈', '复制链接'],
+      success: (res) => {
+        switch (res.tapIndex) {
+          case 0: // 分享给朋友
+            // 触发分享给朋友
+            wx.showToast({
+              title: '请点击右上角分享',
+              icon: 'none',
+              duration: 2000
+            })
+            break
+          case 1: // 分享到朋友圈
+            // 触发分享到朋友圈
+            wx.showToast({
+              title: '请点击右上角分享到朋友圈',
+              icon: 'none',
+              duration: 2000
+            })
+            break
+          case 2: // 复制链接
+            const link = `pages/post/post?id=${post.id}`
+            wx.setClipboardData({
+              data: link,
+              success: () => {
+                wx.showToast({
+                  title: '链接已复制',
+                  icon: 'success'
+                })
+              }
+            })
+            break
+        }
+      }
     })
   },
 

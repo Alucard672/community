@@ -1,0 +1,13 @@
+<view class="shop-card" bindtap="onShopTap">
+  <view class="shop-header">
+    <image class="shop-avatar" src="{{shop.avatarUrl || '/images/shop.png'}}" />
+    <view class="shop-info">
+      <text class="shop-name">{{shop.name || '店铺名称'}}</text>
+      <text class="shop-desc">{{shop.description || '店铺描述'}}</text>
+    </view>
+  </view>
+  <view class="shop-footer">
+    <text class="rating">⭐ {{shop.rating || 5.0}}</text>
+    <text class="distance">{{shop.distance || '1.2km'}}</text>
+  </view>
+</view>

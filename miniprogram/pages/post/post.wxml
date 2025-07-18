@@ -1,7 +1,7 @@
 <!-- 帖子详情页面 -->
 <view class="container">
-  <!-- 帖子内容 -->
-  <view class="post-content">
+  <!-- 帖子内容卡片 -->
+  <view class="post-card">
     <!-- 作者信息 -->
     <view class="author-section">
       <image class="avatar" src="{{post.author.avatar}}" />
@@ -55,68 +55,73 @@
 
     <!-- 位置信息 -->
     <view class="location-section" wx:if="{{post.location}}">
-      <icon type="location" size="16" color="#999" />
+      <icon type="location" size="16" color="#27ae60" />
       <text class="location-text">{{post.location}}</text>
     </view>
 
-    <!-- 互动统计 -->
+    <!-- 统计信息 -->
     <view class="stats-section">
       <view class="stat-item">
-        <icon type="eye" size="16" color="#999" />
+        <icon type="eye" size="16" color="#27ae60" />
         <text class="stat-number">{{post.stats.views}}</text>
         <text class="stat-label">浏览</text>
       </view>
       <view class="stat-item">
-        <icon type="like" size="16" color="{{post.isLiked ? '#ff4757' : '#999'}}" />
+        <icon type="like" size="16" color="{{post.isLiked ? '#27ae60' : '#bbb'}}" />
         <text class="stat-number">{{post.stats.likes}}</text>
         <text class="stat-label">点赞</text>
       </view>
       <view class="stat-item">
-        <icon type="comment" size="16" color="#999" />
+        <icon type="comment" size="16" color="#27ae60" />
         <text class="stat-number">{{post.stats.comments}}</text>
         <text class="stat-label">评论</text>
       </view>
       <view class="stat-item">
-        <icon type="share" size="16" color="#999" />
+        <icon type="share" size="16" color="#27ae60" />
         <text class="stat-number">0</text>
         <text class="stat-label">分享</text>
       </view>
     </view>
-  </view>
 
-  <!-- 互动按钮 -->
-  <view class="action-bar">
-    <view class="action-item {{post.isLiked ? 'liked' : ''}}" bindtap="toggleLike">
-      <view class="action-icon">
-        <icon type="like" size="24" color="{{post.isLiked ? '#ff4757' : '#666'}}" />
+    <!-- 交互按钮 -->
+    <view class="action-bar">
+      <view class="action-item {{post.isLiked ? 'liked' : ''}}" bindtap="toggleLike">
+        <text class="action-icon">{{post.isLiked ? '❤️' : '🤍'}}</text>
       </view>
-      <text class="action-text">{{post.isLiked ? '已点赞' : '点赞'}}</text>
-    </view>
-    <view class="action-item" bindtap="showCommentInput">
-      <view class="action-icon">
-        <icon type="comment" size="24" color="#666" />
+      <view class="action-item" bindtap="sharePost">
+        <text class="action-icon">📤</text>
       </view>
-      <text class="action-text">写评论</text>
-    </view>
-    <view class="action-item" bindtap="sharePost">
-      <view class="action-icon">
-        <icon type="share" size="24" color="#666" />
+      <view class="action-item" bindtap="reportPost">
+        <text class="action-icon warning">⚠️</text>
       </view>
-      <text class="action-text">分享</text>
-    </view>
-    <view class="action-item" bindtap="reportPost">
-      <view class="action-icon warning">
-        <icon type="warn" size="24" color="#666" />
-      </view>
-      <text class="action-text">举报</text>
     </view>
   </view>
 
-  <!-- 评论区域 -->
+  <!-- 评论区卡片 -->
   <view class="comments-section">
     <view class="section-title">
       <text>评论 ({{comments.length}})</text>
     </view>
+    
+    <!-- 评论输入框 -->
+    <view class="comment-input-section">
+      <image class="comment-input-avatar" src="/images/avatar1.jpg" />
+      <view class="comment-input-wrapper">
+        <textarea 
+          class="comment-textarea" 
+          placeholder="写下你的评论..." 
+          value="{{commentText}}"
+          bindinput="onCommentInput"
+          maxlength="200"
+          auto-height="{{true}}"
+        ></textarea>
+        <view class="comment-input-footer">
+          <text class="comment-count">{{commentText.length}}/200</text>
+          <button class="submit-comment-btn" bindtap="submitComment" disabled="{{!commentText.trim()}}">发送</button>
+        </view>
+      </view>
+    </view>
+    
     <view class="comment-list">
       <view 
         wx:for="{{comments}}" 
@@ -140,9 +145,10 @@
       </view>
     </view>
     <!-- 空状态 -->
-    <view class="empty-comments" wx:if="{{comments.length === 0}}">
-      <text class="empty-icon">💬</text>
-      <text class="empty-text">暂无评论，快来发表第一条评论吧！</text>
+    <view class="empty-comments-card" wx:if="{{comments.length === 0}}">
+      <view class="empty-icon-main">💬</view>
+      <view class="empty-title-main">暂无评论</view>
+      <view class="empty-desc-main">快来发表第一条评论吧！</view>
     </view>
   </view>
 
@@ -169,20 +175,4 @@
   </view>
 </view>
 
-<!-- 评论输入框 -->
-<view class="comment-input-modal" wx:if="{{showCommentInput}}">
-  <view class="modal-mask" bindtap="hideCommentInput"></view>
-  <view class="comment-input-container">
-    <textarea 
-      class="comment-textarea" 
-      placeholder="写下你的评论..." 
-      value="{{commentText}}"
-      bindinput="onCommentInput"
-      auto-focus="{{true}}"
-    ></textarea>
-    <view class="comment-input-actions">
-      <button class="cancel-btn" bindtap="hideCommentInput">取消</button>
-      <button class="submit-btn" bindtap="submitComment">发送</button>
-    </view>
-  </view>
-</view> 
+ 

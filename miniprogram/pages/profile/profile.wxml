@@ -1,75 +1,42 @@
 <view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="custom-navbar">
+    <view class="navbar-content">
+      <text class="navbar-title">个人中心</text>
+    </view>
+  </view>
+
   <!-- 用户信息卡片 -->
   <view class="user-card">
-    <view class="user-info">
-      <image class="user-avatar" src="{{userInfo.avatar || '/miniprogram/images/avatar1.jpg'}}" />
-      <view class="user-details">
-        <text class="user-name">{{userInfo.nickname || '未登录'}}</text>
-        <text class="user-id" wx:if="{{userInfo && userInfo.phone}}">{{userInfo.phone}}</text>
+    <image class="user-avatar" src="{{userInfo.avatarUrl || '/images/avatar1.jpg'}}" mode="aspectFill" />
+    <view class="user-details">
+      <text class="user-name">{{userInfo.nickName || '未登录'}}</text>
+      <text class="user-id" wx:if="{{userInfo.nickName}}">ID: {{userInfo.userId || '000000'}}</text>
+    </view>
+    <button wx:if="{{!hasUserInfo}}" class="login-btn" open-type="getUserInfo" bindgetuserinfo="getUserInfo">点击登录</button>
+  </view>
+
+  <!-- 功能菜单区 -->
+  <view class="menu-section">
+    <view class="menu-grid">
+      <view class="menu-item" wx:for="{{menuList}}" wx:key="title" data-index="{{index}}" bindtap="onMenuClick">
+        <view class="menu-icon {{item.color}}">
+          <image src="{{item.icon}}" mode="aspectFit" />
+        </view>
+        <text class="menu-title">{{item.title}}</text>
       </view>
-      <button wx:if="{{!userInfo}}" class="user-edit wx-login-btn" open-type="getUserProfile" bindtap="onLogin">微信一键登录</button>
     </view>
   </view>
 
-  <!-- 统计信息区块（未登录时置灰） -->
-  <view class="stats-section {{!userInfo ? 'disabled' : ''}}">
-    <view class="stats-grid">
-      <view class="stat-item" bindtap="goToMyTopics" hover-class="{{userInfo ? 'stat-item-active' : ''}}">
-        <text class="stat-number">{{userInfo ? topicsCount : '--'}}</text>
-        <text class="stat-label">我的话题</text>
-      </view>
-      <view class="stat-item" bindtap="goToMyFavorites" hover-class="{{userInfo ? 'stat-item-active' : ''}}">
-        <text class="stat-number">{{userInfo ? favoritesCount : '--'}}</text>
-        <text class="stat-label">我的收藏</text>
-      </view>
-      <view class="stat-item" bindtap="goToMyComments" hover-class="{{userInfo ? 'stat-item-active' : ''}}">
-        <text class="stat-number">{{userInfo ? 0 : '--'}}</text>
-        <text class="stat-label">我的评论</text>
-      </view>
-      <view class="stat-item" bindtap="goToSettings" hover-class="{{userInfo ? 'stat-item-active' : ''}}">
-        <icon type="settings" size="20" />
-        <text class="stat-label">设置</text>
-      </view>
+  <!-- 其他功能 -->
+  <view class="other-section">
+    <view class="other-item" bindtap="onSettings">
+      <text class="other-title">设置</text>
+      <text class="arrow">></text>
     </view>
-    <view wx:if="{{!userInfo}}" style="text-align:center;color:#bbb;font-size:24rpx;margin-top:16rpx;">请先登录以查看详细数据</view>
-  </view>
-
-  <!-- 菜单区块（未登录时置灰） -->
-  <view class="menu-section {{!userInfo ? 'disabled' : ''}}">
-    <view class="section-header">
-      <text class="section-title">功能菜单</text>
+    <view class="other-item" bindtap="onAbout">
+      <text class="other-title">关于我们</text>
+      <text class="arrow">></text>
     </view>
-    <view class="menu-list">
-      <view class="menu-item" bindtap="goToMyTopics">
-        <view class="menu-icon blue"><icon type="comment" size="20" /></view>
-        <text>我的话题</text>
-      </view>
-      <view class="menu-item" bindtap="goToMyFavorites">
-        <view class="menu-icon orange"><icon type="star" size="20" /></view>
-        <text>我的收藏</text>
-      </view>
-      <view class="menu-item" bindtap="goToMyComments">
-        <view class="menu-icon green"><icon type="message" size="20" /></view>
-        <text>我的评论</text>
-      </view>
-      <view class="menu-item" bindtap="goToSettings">
-        <view class="menu-icon purple"><icon type="settings" size="20" /></view>
-        <text>设置</text>
-      </view>
-    </view>
-    <view wx:if="{{!userInfo}}" style="text-align:center;color:#bbb;font-size:24rpx;margin-top:16rpx;">登录后可使用全部功能</view>
-  </view>
-
-  <!-- 商家相关按钮 -->
-  <view wx:if="{{userInfo && userInfo.role === 'user'}}">
-    <button bindtap="toApplyShop">申请成为商家</button>
-  </view>
-  <view wx:if="{{userInfo && userInfo.role === 'shop'}}">
-    <button bindtap="toShopCenter">商家中心</button>
-  </view>
-
-  <!-- 悬浮发布按钮 -->
-  <view class="float-publish" bindtap="goToPublish">
-    <icon type="plus" size="24" color="#fff"></icon>
   </view>
 </view> 
